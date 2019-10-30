@@ -1,0 +1,32 @@
+{
+  "name": "j2sql2",
+  "version": "1.9.26",
+  "description": "j2sql2自用函数",
+  "main": "index.js",
+  "scripts": {
+    "push": "npm version patch && npm publish . && git push",
+    "cz": "git add . && git status && git cz && npm version patch && npm publish .",
+    "test": "standard *.js && istanbul cover ./node_modules/mocha/bin/_mocha -- -r co-mocha --reporter spec --timeout 100000 --recursive tests/",
+    "coveralls": "istanbul cover _mocha -- -r co-mocha --reporter spec --timeout 100000 --recursive tests/ && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kongnet/j2sql2.git"
+  },
+  "author": "Kongnet <9601698@qq.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.7.1",
+    "ioredis": "^4.14.1",
+    "meeko": "^1.8.29",
+    "promise-mysql": "^4.1.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-jt"
+    }
+  },
+  "devDependencies": {
+    "cz-jt": "^0.1.11"
+  }
+}
