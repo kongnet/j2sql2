@@ -66,7 +66,7 @@ class SkyDB {
           // 这里这样处理因为之前是异步调用完成所有表加载
           const outStr = `j2sql2 (${pack.version || 'Unknown'}) [${$.c.y(
             `${o.host} : ${o.port}`
-          )}] [${$.c.y(n)}] Tables loadTime: ${$.c.y($.now() - t)} ms`
+          )}] [${$.c.y(n)}] Tables, loadTime: ${$.c.y($.now() - t)} ms`
           console.log($.c.g('✔'), outStr)
           pool.on('connection', function () {
             console.log($.c.g('✔'), outStr)
@@ -95,6 +95,7 @@ class SkyDB {
       return {}
     }
     try {
+      const t = $.now()
       if (o.auth) o.password = o.auth
       o.family = o.family || 4
       o.showFriendlyErrorStack = true
@@ -117,7 +118,7 @@ class SkyDB {
           $.c.g('✔'),
           `Redis [${$.c.y(`${o.host} : ${o.port}`)}] db ${$.c.y(
             o.db + ''
-          )} [${$.c.y(r + '')}] Objects`
+          )} [${$.c.y(r + '')}] Objects, loadTime: ${$.c.y($.now() - t)} ms`
         )
       })
       redis.on('error', function (e) {
