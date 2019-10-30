@@ -4,7 +4,11 @@ const Redis = require('ioredis')
 Redis.Promise = require('bluebird') // 使用蓝鸟
 const DbOpt = require('./lib/index')
 const pack = require('./package.json')
-
+/*
+400 sql前端解析错误
+401
+402 sql后端执行错误
+*/
 class SkyDB {
   constructor (option) {
     this.mysqlObj = this.createMysqlOpt(option.mysql)
@@ -37,8 +41,8 @@ class SkyDB {
       const tableSize = r[1].length
       let unLoadTable = tableSize // 准备加载表计数
       if (tableSize === 0) {
-        $.log($.c.r('✘'), `J2sql (${pack.version}) [${$.c.y(0)} tables]`)
-        return { errCode: 400, msg: '数据库中没有数据表' }
+        $.log($.c.r('✘'), `J2sql2 (${pack.version}) [${$.c.y(0)} tables]`)
+        return { errCode: 402, msg: '数据库中没有数据表' }
       }
       for (let i = 0; i < r[1].length; i++) {
         const item = r[1][i]
@@ -60,7 +64,7 @@ class SkyDB {
         // $.log('DB Obj loading =>', db._nowPercent, '%') // 打印加载进度
         if (unLoadTable <= 0) {
           // 这里这样处理因为之前是异步调用完成所有表加载
-          const outStr = `skySql (${pack.version || 'Unknown'}) [${$.c.y(
+          const outStr = `j2sql2 (${pack.version || 'Unknown'}) [${$.c.y(
             `${o.host} : ${o.port}`
           )}] [${$.c.y(n)}] Tables loadTime: ${$.c.y($.now() - t)} ms`
           console.log($.c.g('✔'), outStr)
@@ -68,7 +72,7 @@ class SkyDB {
             console.log($.c.g('✔'), outStr)
           })
           pool.on('enqueue', function () {
-            $.log('<-- J2sql pool enqueue!')
+            $.log('<-- J2sql2 pool enqueue!')
           })
           db.pool = pool
           db.mysql = Mysql

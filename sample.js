@@ -19,14 +19,14 @@ async function init () {
   }
   try {
     const skyDB = new SkyDB({ mysql: dbObj, redis: redisObj })
-    const db = await skyDB.mysql
-    const rd = await skyDB.redis
+    const db = await skyDB.mysql // 创建mysql实例
+    const rd = await skyDB.redis // 创建redis 实例
     console.log('设置j2sql2_test', await rd.set('j2sql2_test', '1'))
     console.log('获取j2sql2_test', await rd.get('j2sql2_test'))
     console.log('删除j2sql2_test', await rd.del('j2sql2_test'))
     console.log('获取j2sql2_test', await rd.get('j2sql2_test'))
 
-    console.log(await db.run('select ?+? as sum', [1, 2]))
+    console.log(await db.run('select ?+? as sum', [1, 2])) // 建议使用方式
     console.log(await db.t1.R({}, {}, {}, 1).run())
   } catch (e) {
     console.error(e)
