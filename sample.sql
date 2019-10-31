@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 30/10/2019 19:09:36
+ Date: 31/10/2019 18:04:25
 */
 
 SET NAMES utf8mb4;
@@ -26,16 +26,19 @@ CREATE TABLE `t1`  (
   `pid` int(11) NULL DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `son` int(11) NULL DEFAULT NULL,
+  `c_time` datetime(0) NULL DEFAULT NULL,
+  `m_time` datetime(0) NULL DEFAULT NULL,
+  `d_flag` int(11) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t1
 -- ----------------------------
-INSERT INTO `t1` VALUES (1, 0, 'A', 2);
-INSERT INTO `t1` VALUES (2, 0, 'B', 1);
-INSERT INTO `t1` VALUES (3, 1, 'C', 0);
-INSERT INTO `t1` VALUES (4, 1, 'D', 0);
-INSERT INTO `t1` VALUES (5, 2, 'E', 0);
+INSERT INTO `t1` VALUES (1, 0, 'A', 2, NULL, NULL, 1);
+INSERT INTO `t1` VALUES (2, 0, 'B', 1, NULL, NULL, 1);
+INSERT INTO `t1` VALUES (3, 1, 'C', 0, NULL, NULL, 0);
+INSERT INTO `t1` VALUES (4, 1, 'D', 0, NULL, NULL, 0);
+INSERT INTO `t1` VALUES (5, 2, 'E', 0, NULL, NULL, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

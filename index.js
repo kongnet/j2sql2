@@ -2,7 +2,8 @@ const $ = require('meeko')
 const Mysql = require('promise-mysql')
 const Redis = require('ioredis')
 Redis.Promise = require('bluebird') // 使用蓝鸟
-const DbOpt = require('./lib/index')
+const DbOpt = require('./lib/mysql_opt')
+const extendDB = require('./lib/crud.js')
 const pack = require('./package.json')
 /*
 400 sql前端解析错误
@@ -80,6 +81,12 @@ class SkyDB {
 
           db.run = async function (preSql, valArr = []) {
             return db.pool.query(preSql, valArr)
+          }
+          if (o.crudExtend) {
+            // 如果有此属性，扩展ex属性
+            db[_name].ex = {}
+            let crudExtend = o.crudExtend || {}
+            extendDB(db[_name].ex, db, _name, crudExtend)
           }
         } else {
         }
