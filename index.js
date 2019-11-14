@@ -4,6 +4,7 @@ const Redis = require('ioredis')
 Redis.Promise = require('bluebird') // 使用蓝鸟
 const DbOpt = require('./lib/mysql_opt')
 const extendDB = require('./lib/crud.js')
+const insertData = require('./lib/mock_insert.js')
 const pack = require('./package.json')
 /*
 400 sql前端解析错误
@@ -82,20 +83,28 @@ class SkyDB {
           db.run = async function (preSql, valArr = []) {
             return db.pool.query(preSql, valArr)
           }
+
+          db.genData = async function (tableName, n = 10000) {
+            return insertData(db, tableName, n)
+          }
           if (o.crudExtend) {
             // 如果有此属性，扩展ex属性
             db[_name].ex = {}
-            let crudExtend = o.crudExtend || {}
+            const crudExtend = o.crudExtend || {}
             extendDB(db[_name].ex, db, _name, crudExtend)
           }
         } else {
         }
       }
     } catch (e) {
-      console.error($.c.r('✘'), `Mysql: ${e.message}`)
+      console.error(
+        $.c.r('✘'),
+        `Mysql: [${$.c.y(`${o.host} : ${o.port}`)}] ${e.message}`
+      )
     }
     return db
   }
+
   async createRedisOpt (o) {
     if (!o || $.tools.ifObjEmpty(o)) {
       console.log($.c.dimy('？ Skip Redis Init...'))
@@ -120,7 +129,7 @@ class SkyDB {
       }
       redis.on('connect', async function () {
         redis.connStatus = { stat: 1 }
-        let r = await redis.dbsize()
+        const r = await redis.dbsize()
         console.log(
           $.c.g('✔'),
           `Redis [${$.c.y(`${o.host} : ${o.port}`)}] db ${$.c.y(
