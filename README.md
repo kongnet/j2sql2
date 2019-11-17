@@ -31,7 +31,7 @@ mysql:{
 redis:{
      keyLimit: ['x1', 'c*'] // '*' 全部允许
 }
-// 也可以通过redis实例 redis.keysLimit.add('*') or rd.keysLimit.status = 0 全部允许(关闭过滤)
+// 也可以通过redis实例 redis.keysLimit.add('*') or redis.keysLimit.status = 0 全部允许(关闭过滤)
 // 详见 sample.js
 ```
 * 详见crud.js
