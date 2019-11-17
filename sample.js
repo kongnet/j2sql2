@@ -1,4 +1,3 @@
-const $ = require('meeko')
 const SkyDB = require('./index.js')
 const Config = require('./sample_config') // redis mysql两组配置，以及mysql extend字段限制配置
 
