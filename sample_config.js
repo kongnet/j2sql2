@@ -22,7 +22,9 @@ const redisObj = {
   host: '127.0.0.1',
   port: 32769,
   auth: '',
-  db: 0
+  db: 0,
+  // 如果有此字段就会对，有key的操作的命令进行过滤,排序后判断，有限先满足带*号的规则，再满足普通规则
+  keyLimit: ['x1', 'c*'] // '*' 全部允许
 }
 module.exports = {
   mysql: dbObj,

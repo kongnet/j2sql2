@@ -27,6 +27,13 @@ mysql:{
     }
 }
 ```
+``` javascript
+redis:{
+     keyLimit: ['x1', 'c*'] // '*' 全部允许
+}
+// 也可以通过redis实例 redis.keysLimit.add('*') or rd.keysLimit.status = 0 全部允许(关闭过滤)
+// 详见 sample.js
+```
 * 详见crud.js
 * page, 分页
 * list,

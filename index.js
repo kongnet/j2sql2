@@ -3,8 +3,10 @@ const Mysql = require('promise-mysql')
 const Redis = require('ioredis')
 Redis.Promise = require('bluebird') // 使用蓝鸟
 const DbOpt = require('./lib/mysql_opt')
-const extendDB = require('./lib/crud.js')
-const insertData = require('./lib/mock_insert.js')
+const extendDB = require('./lib/mysql_crud.js')
+const insertData = require('./lib/mysql_mock_insert.js')
+const KeysLimit = require('./lib/redis_keys_limit.js')
+
 const pack = require('./package.json')
 /*
 400 sql前端解析错误
@@ -145,7 +147,8 @@ class SkyDB {
       })
 
       await $.tools.waitNotEmpty(redis, 'connStatus')
-      return redis
+      redis.keysLimit = new KeysLimit(redis, o)
+      return redis // 增加key过滤
     } catch (e) {
       console.error($.c.r('✘'), `Redis: ${e.message}`)
     }
