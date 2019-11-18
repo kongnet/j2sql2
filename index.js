@@ -51,6 +51,7 @@ class SkyDB {
       for (let i = 0; i < r[1].length; i++) {
         const item = r[1][i]
         const _name = item['Tables_in_' + dbName]
+
         db[_name] = {}
         const tableFieldArr = []
         const tableTypeArr = []
@@ -64,7 +65,12 @@ class SkyDB {
         unLoadTable--
         n++
         db._nowPercent = ~~(((tableSize - unLoadTable) / tableSize) * 100)
-
+        if (o.crudExtend) {
+          // 如果有此属性，扩展ex属性
+          db[_name].ex = {}
+          const crudExtend = o.crudExtend || {}
+          extendDB(db[_name].ex, db, _name, crudExtend)
+        }
         // $.log('DB Obj loading =>', db._nowPercent, '%') // 打印加载进度
         if (unLoadTable <= 0) {
           // 这里这样处理因为之前是异步调用完成所有表加载
@@ -88,12 +94,6 @@ class SkyDB {
 
           db.genData = async function (tableName, n = 10000) {
             return insertData(db, tableName, n)
-          }
-          if (o.crudExtend) {
-            // 如果有此属性，扩展ex属性
-            db[_name].ex = {}
-            const crudExtend = o.crudExtend || {}
-            extendDB(db[_name].ex, db, _name, crudExtend)
           }
         } else {
         }
