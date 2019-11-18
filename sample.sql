@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 31/10/2019 18:04:25
+ Date: 18/11/2019 18:31:11
 */
 
 SET NAMES utf8mb4;
@@ -40,5 +40,17 @@ INSERT INTO `t1` VALUES (2, 0, 'B', 1, NULL, NULL, 1);
 INSERT INTO `t1` VALUES (3, 1, 'C', 0, NULL, NULL, 0);
 INSERT INTO `t1` VALUES (4, 1, 'D', 0, NULL, NULL, 0);
 INSERT INTO `t1` VALUES (5, 2, 'E', 0, NULL, NULL, 0);
+
+-- ----------------------------
+-- Table structure for t2
+-- ----------------------------
+DROP TABLE IF EXISTS `t2`;
+CREATE TABLE `t2`  (
+  `id` int(11) NOT NULL,
+  `c_time` datetime(0) NULL DEFAULT NULL,
+  `m_time` datetime(0) NULL DEFAULT NULL,
+  `d_flag` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
