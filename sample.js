@@ -14,9 +14,9 @@ async function init () {
 
     console.log('sql算式', await db.run('select ?+? as sum', [3, 2])) // 建议使用方式 db.run(preSQL模式)
     console.log('取一条d_flag=1的', await db.t1.R({}, {}, {}, 1).run()) // run最后 指定t1表模式
-    // console.log(await db.t1.ex.page(null, null, 3, 1, 'name', 1)) // 推荐分页方式 有2条d_flag数据被排除
-    // console.log((await db.t1.ex.list()).length)
-    // console.log(await db.t1.ex) // crud.js扩展基本增删改查
+    console.log(await db.t1.ex.page(null, null, 3, 1, 'name', 1)) // 推荐分页方式 有2条d_flag数据被排除
+    console.log((await db.t1.ex.list()).length)
+    console.log(await db.t1.ex) // crud.js扩展基本增删改查
     // console.log(await db.genData('t1')) 向t1表 默认插入1w条模拟数据
     rd.keysLimit.status = 1 // 重新打开redis key检验 或者 用rd.keysLimit.del('*')
     console.log(await rd.get('k1')) //

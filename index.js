@@ -79,7 +79,7 @@ class SkyDB {
             $.log('<-- J2sql2 pool enqueue!')
           })
           db.pool = pool
-          db.mysql = Mysql
+          db._mysql = Mysql
           db.cmd = new DbOpt(db, _name, exColumn).cmd
 
           db.run = async function (preSql, valArr = []) {
