@@ -1,11 +1,16 @@
 const SkyDB = require('./index.js')
-const Config = require('./sample_config') // redis mysql两组配置，以及mysql extend字段限制配置
+const Config = require('./sample_config') // redis mysql两组配置，以及mysql extend字段限制配置 注意配置
 
 async function init () {
   try {
-    const skyDB = new SkyDB({ mysql: Config.mysql, redis: Config.redis })
+    const skyDB = new SkyDB({
+      mysql: Config.mysql,
+      redis: Config.redis,
+      rabbitMQ: Config.rabbitMQ
+    })
     const db = await skyDB.mysql // 创建mysql实例
     const rd = await skyDB.redis // 创建redis 实例
+    const mq = await skyDB.rabbitMQ // 创建rabbitMq 实例
     console.log('check key off', rd.keysLimit.add('*')) // 关闭redis检验,或者配置Config.redis
     console.log('设置j2sql2_test', await rd.set('j2sql2_test', '1'))
     console.log('获取j2sql2_test', await rd.get('j2sql2_test'))

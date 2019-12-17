@@ -20,15 +20,24 @@ const dbObj = {
 }
 const redisObj = {
   host: '127.0.0.1',
-  port: 32769,
+  port: 6379, // 默认 6379
   auth: '',
   db: 0,
   // 如果有此字段就会对，有key的操作的命令进行过滤,排序后判断，有限先满足带*号的规则，再满足普通规则
   keyLimit: ['x1', 'c*'] // '*' 全部允许
 }
+const rabbitMQ = {
+  protocol: 'amqp',
+  hostname: 'localhost',
+  port: 32769, //默认 5672
+  username: 'user', // guest
+  password: 'user', // guest
+  vhost: '/'
+}
 module.exports = {
   mysql: dbObj,
   redis: redisObj,
+  rabbitMQ: rabbitMQ,
   dbscan: {
     mysql: dbObj,
     redis: redisObj,

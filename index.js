@@ -6,17 +6,23 @@ const DbOpt = require('./lib/mysql_opt')
 const extendDB = require('./lib/mysql_crud.js')
 const insertData = require('./lib/mysql_mock_insert.js')
 const KeysLimit = require('./lib/redis_keys_limit.js')
-
+const RabbitMQ = require('./lib/rabbitmQ_opt')
 const pack = require('./package.json')
 /*
 400 sql前端解析错误
 401
 402 sql后端执行错误
 */
+
 class SkyDB {
   constructor (option) {
+    this.rabbitMQObj = this.createRabbitMQ(option.rabbitMQ)
     this.mysqlObj = this.createMysqlOpt(option.mysql)
     this.redisOptObj = this.createRedisOpt(option.redis)
+  }
+
+  get rabbitMQ () {
+    return this.rabbitMQObj
   }
 
   get mysql () {
@@ -152,6 +158,23 @@ class SkyDB {
     } catch (e) {
       console.error($.c.r('✘'), `Redis: ${e.message}`)
     }
+  }
+
+  async createRabbitMQ (o) {
+    if (!o || $.tools.ifObjEmpty(o)) {
+      console.log($.c.dimy('？ Skip RabbitMQ Init...'))
+      return {}
+    }
+    const mq = new RabbitMQ(o)
+    const mqObj = mq
+    const ch = await mqObj.open(o)
+    if (ch !== -1) {
+      mqObj.close = ch.close
+      mqObj.ack = ch.ack
+      mqObj.ch = ch
+      return mqObj
+    }
+    return -1
   }
 }
 
