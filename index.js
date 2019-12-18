@@ -6,7 +6,7 @@ const DbOpt = require('./lib/mysql_opt')
 const extendDB = require('./lib/mysql_crud.js')
 const insertData = require('./lib/mysql_mock_insert.js')
 const KeysLimit = require('./lib/redis_keys_limit.js')
-const RabbitMQ = require('./lib/rabbitmQ_opt')
+const RabbitMQ = require('./lib/rabbitmq_opt')
 const pack = require('./package.json')
 /*
 400 sql前端解析错误
