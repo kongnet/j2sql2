@@ -34,7 +34,16 @@ const rabbitMQ = {
   password: 'user', // guest
   vhost: '/'
 }
+const mssqlObj = {
+  user: '...',
+  password: '...',
+  server: '...',
+  port: 1433,
+  database: '...'
+}
+
 module.exports = {
+  mssql: mssqlObj,
   mysql: dbObj,
   redis: redisObj,
   rabbitMQ: rabbitMQ,

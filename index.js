@@ -7,6 +7,7 @@ const extendDB = require('./lib/mysql_crud.js')
 const insertData = require('./lib/mysql_mock_insert.js')
 const KeysLimit = require('./lib/redis_keys_limit.js')
 const RabbitMQ = require('./lib/rabbitmq_opt')
+const mssql = require('mssql')
 const pack = require('./package.json')
 /*
 400 sql前端解析错误
@@ -19,6 +20,7 @@ class SkyDB {
     this.rabbitMQObj = this.createRabbitMQ(option.rabbitMQ)
     this.mysqlObj = this.createMysqlOpt(option.mysql)
     this.redisOptObj = this.createRedisOpt(option.redis)
+    this.mssqlOptObj = this.createMssqlOpt(option.mssql)
   }
 
   get rabbitMQ () {
@@ -32,7 +34,9 @@ class SkyDB {
   get redis () {
     return this.redisOptObj
   }
-
+  get mssql () {
+    return this.mssqlOptObj
+  }
   async createMysqlOpt (o) {
     if (!o || $.tools.ifObjEmpty(o)) {
       console.log($.c.dimy('？ Skip Mysql Init...'))
@@ -175,6 +179,38 @@ class SkyDB {
       return mqObj
     }
     return -1
+  }
+
+  async createMssqlOpt (o) {
+    if (!o || $.tools.ifObjEmpty(o)) {
+      console.log($.c.dimy('？ Skip MSSQL Init...'))
+      return {}
+    }
+    try {
+      const t = $.now()
+      const pool = await mssql.connect(o)
+      let r = await pool
+        .request()
+        .query(`Select Name FROM SysObjects Where XType='U' order BY Name`)
+      const outStr = `MSSQL [${$.c.y(`${o.server} : ${o.port}`)}] [${$.c.y(
+        r.rowsAffected[0]
+      )}] Tables, loadTime: ${$.c.y($.now() - t)} ms`
+      console.log($.c.g('✔'), outStr)
+      mssql.on('error', e => {
+        console.error('MSSQL ERR:', e)
+      })
+      const mssqlObj = {
+        pool: pool,
+        run: function (sql) {
+          let r = pool.request().query(sql)
+          return r
+        }
+      }
+      return mssqlObj
+    } catch (e) {
+      console.error(e)
+      return -1
+    }
   }
 }
 
