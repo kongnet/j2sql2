@@ -201,8 +201,8 @@ class SkyDB {
       })
       const mssqlObj = {
         pool: pool,
-        run: function (sql) {
-          let r = pool.request().query(sql)
+        run: function (sql, valArr) {
+          let r = pool.request().query(Mysql.format(sql, valArr))
           return r
         }
       }
