@@ -29,7 +29,7 @@ const redisObj = {
 const rabbitMQ = {
   protocol: 'amqp',
   hostname: 'localhost',
-  port: 5672, //默认 5672
+  port: 5672, // 默认 5672
   username: 'user', // guest
   password: 'user', // guest
   vhost: '/'

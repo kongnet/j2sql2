@@ -4,7 +4,7 @@ const Config = require('./sample_config') // redis mysql两组配置，以及mys
 async function init () {
   try {
     const skyDB = new SkyDB({
-      //mssql: Config.mssql,
+      // mssql: Config.mssql,
       mysql: Config.mysql,
       redis: Config.redis,
       rabbitMQ: Config.rabbitMQ
@@ -12,7 +12,7 @@ async function init () {
     const db = await skyDB.mysql // 创建mysql实例
     const rd = await skyDB.redis // 创建redis 实例
     const mq = await skyDB.rabbitMQ // 创建rabbitMq 实例
-    //const mssql = await skyDB.mssql // 创建mssql 实例
+    // const mssql = await skyDB.mssql // 创建mssql 实例
 
     /*
     let result1 = await mssql.run(`select count(1) as '计数' from  dHistory`)

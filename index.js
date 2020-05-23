@@ -34,9 +34,11 @@ class SkyDB {
   get redis () {
     return this.redisOptObj
   }
+
   get mssql () {
     return this.mssqlOptObj
   }
+
   async createMysqlOpt (o) {
     if (!o || $.tools.ifObjEmpty(o)) {
       console.log($.c.dimy('？ Skip Mysql Init...'))
@@ -96,6 +98,7 @@ class SkyDB {
           })
           db.pool = pool
           db._mysql = pool
+          db.format = Mysql.format
           db.cmd = new DbOpt(db, _name, exColumn).cmd
 
           db.run = async function (preSql, valArr = []) {
@@ -189,9 +192,9 @@ class SkyDB {
     try {
       const t = $.now()
       const pool = await mssql.connect(o)
-      let r = await pool
+      const r = await pool
         .request()
-        .query(`Select Name FROM SysObjects Where XType='U' order BY Name`)
+        .query("Select Name FROM SysObjects Where XType='U' order BY Name")
       const outStr = `MSSQL [${$.c.y(`${o.server} : ${o.port}`)}] [${$.c.y(
         r.rowsAffected[0]
       )}] Tables, loadTime: ${$.c.y($.now() - t)} ms`
@@ -202,7 +205,7 @@ class SkyDB {
       const mssqlObj = {
         pool: pool,
         run: function (sql, valArr) {
-          let r = pool.request().query(Mysql.format(sql, valArr))
+          const r = pool.request().query(Mysql.format(sql, valArr))
           return r
         }
       }
