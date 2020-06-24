@@ -87,7 +87,7 @@ class SkyDB {
         if (unLoadTable <= 0) {
           // 这里这样处理因为之前是异步调用完成所有表加载
           const outStr = `j2sql2 (${pack.version || 'Unknown'}) [${$.c.y(
-            `${o.host} : ${o.port}`
+            `${o.host} : ${o.port} db: ${o.database}`
           )}] [${$.c.y(n)}] Tables, loadTime: ${$.c.y($.now() - t)} ms`
           console.log($.c.g('✔'), outStr)
           pool.on('connection', function () {
@@ -114,7 +114,9 @@ class SkyDB {
     } catch (e) {
       console.error(
         $.c.r('✘'),
-        `Mysql: [${$.c.y(`${o.host} : ${o.port}`)}] ${e.message}`
+        `Mysql: [${$.c.y(`${o.host} : ${o.port} db: ${o.database}`)}] ${
+          e.message
+        }`
       )
     }
     return db
