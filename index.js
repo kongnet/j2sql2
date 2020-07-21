@@ -194,10 +194,10 @@ class SkyDB {
     try {
       const t = $.now()
       const pool = await mssql.connect(o)
-      await pool.request().query(`use \`${o.database}\`;`)
+      await pool.request().query(`use "${o.database}";`)
       const r = await pool
         .request()
-        .query("Select Name FROM SysObjects Where XType='U' order BY Name")
+        .query("Select Name FROM SysObjects Where XType='U' order BY Name;")
       const outStr = `MSSQL [${$.c.y(`${o.server} : ${o.port}`)}] [${$.c.y(
         r.rowsAffected[0]
       )}] Tables, loadTime: ${$.c.y($.now() - t)} ms`
