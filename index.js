@@ -198,9 +198,11 @@ class SkyDB {
       const r = await pool
         .request()
         .query("Select Name FROM SysObjects Where XType='U' order BY Name;")
-      const outStr = `MSSQL [${$.c.y(`${o.server} : ${o.port}`)}] [${$.c.y(
-        r.rowsAffected[0]
-      )}] Tables, loadTime: ${$.c.y($.now() - t)} ms`
+      const outStr = `MSSQL [${$.c.y(
+        `${o.server} : ${o.port} db: ${o.database}`
+      )}] [${$.c.y(r.rowsAffected[0])}] Tables, loadTime: ${$.c.y(
+        $.now() - t
+      )} ms`
       console.log($.c.g('✔'), outStr)
       mssql.on('error', e => {
         console.error('MSSQL ERR:', e)
