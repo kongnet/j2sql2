@@ -35,11 +35,11 @@ const rabbitMQ = {
   vhost: '/'
 }
 const mssqlObj = {
-  user: 'grout2020',
-  password: 'grout2020',
-  server: '123.56.142.247',
+  user: '...',
+  password: '...',
+  server: '...',
   port: 1433,
-  database: '2020_xjb_sk_proficy'
+  database: '...'
 }
 
 module.exports = {
