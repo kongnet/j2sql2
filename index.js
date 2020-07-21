@@ -193,7 +193,8 @@ class SkyDB {
     }
     try {
       const t = $.now()
-      const pool = await mssql.connect(o)
+      const pool = new mssql.ConnectionPool(o)
+      await pool.connect()
       await pool.request().query(`use "${o.database}";`)
       const r = await pool
         .request()
@@ -204,7 +205,7 @@ class SkyDB {
         $.now() - t
       )} ms`
       console.log($.c.g('✔'), outStr)
-      mssql.on('error', e => {
+      pool.on('error', e => {
         console.error('MSSQL ERR:', e)
       })
       const mssqlObj = {
