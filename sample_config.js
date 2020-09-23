@@ -7,6 +7,8 @@ const dbObj = {
   password: '123456',
   database: 'test',
   multipleStatements: true, // 允许运行多行SQL
+  supportBigNumbers: true, // bigInt js=>mysql支持
+  bigNumberStrings: true,
   /*
       有crudExtend属性 就扩展 db['tableName'].ex属性，并检查数据库表是否有如下字段
       ex中的命令全部是默认 d_flag=0 条件的
@@ -16,6 +18,9 @@ const dbObj = {
     /* delflagField: 'd_flag', // 默认逻辑删除标记
       createTimeField: 'c_time',
       modifyTimeField: 'm_time' */
+  },
+  extendOption: {
+    columnCamelize: true
   }
 }
 const redisObj = {

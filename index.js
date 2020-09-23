@@ -44,11 +44,11 @@ class SkyDB {
       console.log($.c.dimy('？ Skip Mysql Init...'))
       return {}
     }
-    const [t, db, dbName, exColumn] = [
+    const [t, db, dbName, extendOption] = [
       $.now(),
       {},
       o.database || 'test',
-      o.exColumn
+      o.extendOption || {}
     ]
     try {
       const pool = await Mysql.createPool(o)
@@ -67,11 +67,16 @@ class SkyDB {
         db[_name] = {}
         const tableFieldArr = []
         const tableTypeArr = []
+        const tableFielCamelObj = {}
         ;(await pool.query(`desc \`${_name}\`;`)).map(item => {
+          tableFielCamelObj[
+            item.Field.toLowerCase()
+          ] = item.Field.toLowerCase().camelize('_')
           tableFieldArr.push(item.Field.toLowerCase())
           tableTypeArr.push(item.Type.toLowerCase())
         })
-        $.ext(db[_name], new DbOpt(db, _name, exColumn))
+        $.ext(db[_name], new DbOpt(db, _name, extendOption))
+        db[_name].fieldCamel = tableFielCamelObj
         db[_name].field = tableFieldArr
         db[_name].type = tableTypeArr
         unLoadTable--
@@ -99,7 +104,7 @@ class SkyDB {
           db.pool = pool
           db._mysql = pool
           db.format = Mysql.format
-          db.cmd = new DbOpt(db, _name, exColumn).cmd
+          db.cmd = new DbOpt(db, _name, extendOption).cmd
 
           db.run = async function (preSql, valArr = []) {
             return db.pool.query(preSql, valArr)

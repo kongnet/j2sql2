@@ -10,6 +10,19 @@ npm i j2sql2
 
 node sample.js
 
+### 关键字和表的冲突
+
+> 不要使用以下关键字作为数据库表名
+
+pool
+\_mysql
+format
+cmd
+run
+genData
+
+### check 增强
+
 > 在使用对象提交 sql 的情况下,增强如下功能
 
 - 对 where 条件是否有包含此列
@@ -17,6 +30,14 @@ node sample.js
 - 对 order by 是否有包含此列
 - 对 string 和 number 类型进行预检测
 - 同时封装 mysql 和 redis 详见 sample.js
+
+> 如果数据库配置文件中打开如下配置，将返回和接受，camel 形式的列名，例如 cTime => c_time ..
+
+```javascript
+extendOption: {
+  columnCamelize: true
+}
+```
 
 > 如果有 mysql.crudExtend 就扩展 db['tableName'].ex 属性，并检查数据库表是否有如下字段,都基于 d_flag 字段
 

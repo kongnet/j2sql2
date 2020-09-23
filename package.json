@@ -19,7 +19,7 @@
     "amqplib": "^0.5.3",
     "bluebird": "^3.7.1",
     "ioredis": "^4.14.1",
-    "meeko": "^1.8.29",
+    "meeko": "*",
     "mssql": "^6.0.1",
     "promise-mysql": "^4.1.1"
   },
