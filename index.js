@@ -16,41 +16,33 @@ const pack = require('./package.json')
 */
 
 class SkyDB {
-  constructor (option) {
+  constructor(option) {
     this.rabbitMQObj = this.createRabbitMQ(option.rabbitMQ)
     this.mysqlObj = this.createMysqlOpt(option.mysql)
     this.redisOptObj = this.createRedisOpt(option.redis)
     this.mssqlOptObj = this.createMssqlOpt(option.mssql)
   }
 
-  get rabbitMQ () {
+  get rabbitMQ() {
     return this.rabbitMQObj
   }
 
-  get mysql () {
+  get mysql() {
     return this.mysqlObj
   }
 
-  get redis () {
+  get redis() {
     return this.redisOptObj
   }
 
-  get mssql () {
+  get mssql() {
     return this.mssqlOptObj
   }
-
-  async createMysqlOpt (o) {
-    if (!o || $.tools.ifObjEmpty(o)) {
-      console.log($.c.dimy('？ Skip Mysql Init...'))
-      return {}
-    }
-    const [t, db, dbName, extendOption] = [
-      $.now(),
-      {},
-      o.database || 'test',
-      o.extendOption || {}
-    ]
+  async getMysqlConnectObj(o, dbName) {
     try {
+      const db = {}
+      const t = $.now()
+      const extendOption = o.extendOption || {}
       const pool = await Mysql.createPool(o)
       const r = await pool.query(`use \`${dbName}\`;show tables;`)
       let n = 0
@@ -68,13 +60,13 @@ class SkyDB {
         const tableFieldArr = []
         const tableTypeArr = []
         const tableFielCamelObj = {}
-        ;(await pool.query(`desc \`${_name}\`;`)).map(item => {
-          tableFielCamelObj[
-            item.Field.toLowerCase()
-          ] = item.Field.toLowerCase().camelize('_')
-          tableFieldArr.push(item.Field.toLowerCase())
-          tableTypeArr.push(item.Type.toLowerCase())
-        })
+          ; (await pool.query(`desc \`${_name}\`;`)).map(item => {
+            tableFielCamelObj[
+              item.Field.toLowerCase()
+            ] = item.Field.toLowerCase().camelize('_')
+            tableFieldArr.push(item.Field.toLowerCase())
+            tableTypeArr.push(item.Type.toLowerCase())
+          })
         $.ext(db[_name], new DbOpt(db, _name, extendOption))
         db[_name].fieldCamel = tableFielCamelObj
         db[_name].field = tableFieldArr
@@ -116,18 +108,28 @@ class SkyDB {
         } else {
         }
       }
+      return db
     } catch (e) {
       console.error(
         $.c.r('✘'),
-        `Mysql: [${$.c.y(`${o.host} : ${o.port} db: ${o.database}`)}] ${
-          e.message
-        }`
+        `Mysql: [${$.c.y(`${o.host} : ${o.port} db: ${o.database}`)}] ${e.message
+        } reconnect...`
       )
+      await $.wait(2000)
+      return this.getMysqlConnectObj(o, dbName)
     }
+  }
+  async createMysqlOpt(o) {
+    if (!o || $.tools.ifObjEmpty(o)) {
+      console.log($.c.dimy('？ Skip Mysql Init...'))
+      return {}
+    }
+    let [db, dbName] = [{}, o.database || 'test']
+    db = await this.getMysqlConnectObj(o, dbName)
     return db
   }
 
-  async createRedisOpt (o) {
+  async createRedisOpt(o) {
     if (!o || $.tools.ifObjEmpty(o)) {
       console.log($.c.dimy('？ Skip Redis Init...'))
       return {}
@@ -174,7 +176,7 @@ class SkyDB {
     }
   }
 
-  async createRabbitMQ (o) {
+  async createRabbitMQ(o) {
     if (!o || $.tools.ifObjEmpty(o)) {
       console.log($.c.dimy('？ Skip RabbitMQ Init...'))
       return {}
@@ -191,7 +193,7 @@ class SkyDB {
     return -1
   }
 
-  async createMssqlOpt (o) {
+  async createMssqlOpt(o) {
     if (!o || $.tools.ifObjEmpty(o)) {
       console.log($.c.dimy('？ Skip MSSQL Init...'))
       return {}
