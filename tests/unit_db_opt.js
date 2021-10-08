@@ -2,8 +2,8 @@
 /* global it */
 /* global before */
 'use strict'
-let assert = require('assert')
-let $ = require('meeko')
+const assert = require('assert')
+const $ = require('meeko')
 global.$ = $
 let db = {}
 const SkyDB = require('../index.js')
@@ -15,7 +15,7 @@ describe('mongoDB转MySQL增删改查基础的单元测试', function () {
       mysql: Config.mysql
     })
     db = await skyMysql.mysql
-    //await $.wait(1000)
+    // await $.wait(1000)
   })
   it('1.find&findone测试', async () => {
     // console.log(db._mysql)
@@ -27,13 +27,13 @@ describe('mongoDB转MySQL增删改查基础的单元测试', function () {
     assert.strictEqual(db.test.R().get(), `select ${allColumn} from \`test\`;`)
     assert.strictEqual(db.test.select().get(), `select ${allColumn} from \`test\`;`)
     assert.strictEqual(db.test.find({
-      'time': {
+      time: {
         '>=': 123,
         '<': 1000
       }
     }).get(), `select ${allColumn} from \`test\` where \`time\`>=123 and \`time\`<1000;`)
     assert.strictEqual(db.test.find({
-      'time': {
+      time: {
         '>=': 'x123',
         '<': 'x1000'
       }
@@ -44,10 +44,10 @@ describe('mongoDB转MySQL增删改查基础的单元测试', function () {
         '<': 'x1000'
       }
     }).get(), `select ${allColumn} from \`test\` where min(a)+1>=\'x123\' and min(a)+1<\'x1000\';`)
-    /*assert.strictEqual(db.test.find({}, {
+    /* assert.strictEqual(db.test.find({}, {
       cell: 1,
       'min(id)': 1
-    }).get(), 'select `cell` as cell,`min(id)` as min(id) from `test`;')*/
+    }).get(), 'select `cell` as cell,`min(id)` as min(id) from `test`;') */
     assert.strictEqual(db.test.find({}, {}, {
       a: 1,
       b: -1
@@ -68,7 +68,7 @@ describe('mongoDB转MySQL增删改查基础的单元测试', function () {
     assert.strictEqual(db.test.D({}, 1).get(), 'delete from `test`;')
     assert.strictEqual(db.test.delete({}, 1).get(), 'delete from `test`;')
     assert.strictEqual(db.test.remove({
-      'time': {
+      time: {
         '>=': 123,
         '<': 1000
       }
@@ -85,7 +85,7 @@ describe('mongoDB转MySQL增删改查基础的单元测试', function () {
       'min(id)': 1
     }).get(), '[Empty!!]')
 
-    /*assert.strictEqual(db.test.update({}, {
+    /* assert.strictEqual(db.test.update({}, {
       cell: 1,
       'min(id)': 1
     }, 1).get(), 'update `test` set `cell`=1,`min(id)`=1;')
@@ -105,7 +105,7 @@ describe('mongoDB转MySQL增删改查基础的单元测试', function () {
     */
   })
 
-  /*it('4.insert测试', async () => {
+  /* it('4.insert测试', async () => {
     assert.strictEqual(db.test.insert().get(), '[Empty!!]')
     assert.strictEqual(db.test.insert({
       cell: 1,

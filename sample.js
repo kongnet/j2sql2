@@ -9,6 +9,7 @@ async function init () {
       redis: Config.redis,
       rabbitMQ: Config.rabbitMQ
     })
+
     const db = await skyDB.mysql // 创建mysql实例
     const rd = await skyDB.redis // 创建redis 实例
     const mq = await skyDB.rabbitMQ // 创建rabbitMq 实例
