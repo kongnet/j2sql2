@@ -37,6 +37,14 @@ async function init () {
     // console.log(await db.genData('t1')) 向t1表 默认插入1w条模拟数据
     rd.keysLimit.status = 1 // 重新打开redis key检验 或者 用rd.keysLimit.del('*')
     console.log(await rd.get('k1')) //
+
+    // reJson 支持
+    
+    let r = (await rd.jset('sky', '.', { 'x': 1 })) 
+    console.log('reJson Test', r)
+    r = (await rd.jget('sky', '.')) 
+    console.log('reJson Test', r)
+    
   } catch (e) {
     console.log(e)
   }

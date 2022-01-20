@@ -59,7 +59,15 @@ redis: {
 // 也可以通过redis实例 redis.keysLimit.add('*') or redis.keysLimit.status = 0 全部允许(关闭过滤)
 // 详见 sample.js
 ```
-
+```javascript
+    // reJson 支持    
+    let r = (await rd.jset('sky', '.', { 'x': 1 })) 
+    console.log('reJson Test', r)
+    r = (await rd.jget('sky', '.')) 
+    console.log('reJson Test', r)
+    
+// 详见 sample.js
+```
 - 详见 crud.js
 - page, 分页
 - list,
