@@ -39,12 +39,12 @@ async function init () {
     console.log(await rd.get('k1')) //
 
     // reJson 支持
-    
+    /*
     let r = (await rd.jset('sky', '.', { 'x': 1 })) 
     console.log('reJson Test', r)
     r = (await rd.jget('sky', '.')) 
     console.log('reJson Test', r)
-    
+    */
   } catch (e) {
     console.log(e)
   }
