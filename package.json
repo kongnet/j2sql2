@@ -16,6 +16,7 @@
   "author": "Kongnet <9601698@qq.com>",
   "license": "MIT",
   "dependencies": {
+    "amqp-connection-manager": "4.1.10",
     "amqplib": "^0.8.0",
     "bluebird": "^3.7.1",
     "ioredis": "^4.14.1",
