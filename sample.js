@@ -35,8 +35,10 @@ async function init () {
 
     // console.log(await db.genData('t1')) 向t1表 默认插入1w条模拟数据
     rd.keysLimit.status = 1 // 重新打开redis key检验 或者 用rd.keysLimit.del('*')
-    console.log('BigInt Test:\n', await db.t1.insert({ name: 12341234n }).get())
-
+    console.log(
+      'BigInt Test:\n',
+      await db.t1.insert({ name: BigInt(3333333), id: 12341234n }).get()
+    )
     console.log(await rd.get('k1')) //
     // reJson 支持
     /*
