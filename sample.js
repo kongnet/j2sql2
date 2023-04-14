@@ -1,6 +1,5 @@
 const SkyDB = require('./index.js')
 const Config = require('./sample_config') // redis mysql两组配置，以及mysql extend字段限制配置 注意配置
-
 async function init () {
   try {
     const skyDB = new SkyDB({
@@ -36,8 +35,9 @@ async function init () {
 
     // console.log(await db.genData('t1')) 向t1表 默认插入1w条模拟数据
     rd.keysLimit.status = 1 // 重新打开redis key检验 或者 用rd.keysLimit.del('*')
-    console.log(await rd.get('k1')) //
+    console.log('BigInt Test:\n', await db.t1.insert({ name: 12341234n }).get())
 
+    console.log(await rd.get('k1')) //
     // reJson 支持
     /*
     let r = (await rd.jset('sky', '.', { 'x': 1 }))

@@ -17,30 +17,30 @@ const pack = require('./package.json')
 */
 
 class SkyDB {
-  constructor(option) {
+  constructor (option) {
     this.rabbitMQObj = this.createRabbitMQ(option.rabbitMQ)
     this.mysqlObj = this.createMysqlOpt(option.mysql)
     this.redisOptObj = this.createRedisOpt(option.redis)
     this.mssqlOptObj = this.createMssqlOpt(option.mssql)
   }
 
-  get rabbitMQ() {
+  get rabbitMQ () {
     return this.rabbitMQObj
   }
 
-  get mysql() {
+  get mysql () {
     return this.mysqlObj
   }
 
-  get redis() {
+  get redis () {
     return this.redisOptObj
   }
 
-  get mssql() {
+  get mssql () {
     return this.mssqlOptObj
   }
 
-  async getMysqlConnectObj(o, dbName) {
+  async getMysqlConnectObj (o, dbName) {
     try {
       const db = {}
       const t = $.now()
@@ -63,12 +63,12 @@ class SkyDB {
         const tableTypeArr = []
         const tableFielCamelObj = {}
           ; (await pool.query(`desc \`${_name}\`;`)).map(item => {
-            tableFielCamelObj[
-              item.Field.toLowerCase()
-            ] = item.Field.toLowerCase().camelize('_')
-            tableFieldArr.push(item.Field.toLowerCase())
-            tableTypeArr.push(item.Type.toLowerCase())
-          })
+          tableFielCamelObj[
+            item.Field.toLowerCase()
+          ] = item.Field.toLowerCase().camelize('_')
+          tableFieldArr.push(item.Field.toLowerCase())
+          tableTypeArr.push(item.Type.toLowerCase())
+        })
         $.ext(db[_name], new DbOpt(db, _name, extendOption))
         db[_name].fieldCamel = tableFielCamelObj
         db[_name].field = tableFieldArr
@@ -122,7 +122,7 @@ class SkyDB {
     }
   }
 
-  async createMysqlOpt(o) {
+  async createMysqlOpt (o) {
     if (!o || $.tools.ifObjEmpty(o)) {
       console.log($.c.dimy('？ Skip Mysql Init...'))
       return {}
@@ -132,7 +132,7 @@ class SkyDB {
     return db
   }
 
-  async createRedisOpt(o) {
+  async createRedisOpt (o) {
     if (!o || $.tools.ifObjEmpty(o)) {
       console.log($.c.dimy('？ Skip Redis Init...'))
       return {}
@@ -191,7 +191,7 @@ class SkyDB {
     }
   }
 
-  async createRabbitMQ(o) {
+  async createRabbitMQ (o) {
     if (!o || $.tools.ifObjEmpty(o)) {
       console.log($.c.dimy('？ Skip RabbitMQ Init...'))
       return {}
@@ -208,7 +208,7 @@ class SkyDB {
     return -1
   }
 
-  async createMssqlOpt(o) {
+  async createMssqlOpt (o) {
     if (!o || $.tools.ifObjEmpty(o)) {
       console.log($.c.dimy('？ Skip MSSQL Init...'))
       return {}
@@ -231,7 +231,7 @@ class SkyDB {
         console.error('MSSQL ERR:', e)
       })
       const mssqlObj = {
-        pool: pool,
+        pool,
         run: function (sql, valArr) {
           const r = pool.request().query(Mysql.format(sql, valArr))
           return r

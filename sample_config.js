@@ -3,7 +3,7 @@ const dbObj = {
   port: 3306,
   pool: 1000,
   timeout: 500000,
-  user: 'root',
+  user: 'test',
   password: '123456',
   database: 'test',
   multipleStatements: true, // 允许运行多行SQL
@@ -57,7 +57,7 @@ module.exports = {
   mssql: mssqlObj,
   mysql: dbObj,
   redis: redisObj,
-  rabbitMQ: rabbitMQ,
+  rabbitMQ,
   dbscan: {
     mysql: dbObj,
     redis: redisObj,
