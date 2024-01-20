@@ -62,10 +62,9 @@ class SkyDB {
         const tableFieldArr = []
         const tableTypeArr = []
         const tableFielCamelObj = {}
-          ; (await pool.query(`desc \`${_name}\`;`)).map(item => {
-          tableFielCamelObj[
-            item.Field.toLowerCase()
-          ] = item.Field.toLowerCase().camelize('_')
+        ;(await pool.query(`desc \`${_name}\`;`)).map(item => {
+          tableFielCamelObj[item.Field.toLowerCase()] =
+            item.Field.toLowerCase().camelize('_')
           tableFieldArr.push(item.Field.toLowerCase())
           tableTypeArr.push(item.Type.toLowerCase())
         })
@@ -114,7 +113,8 @@ class SkyDB {
     } catch (e) {
       console.error(
         $.c.r('✘'),
-        `Mysql: [${$.c.y(`${o.host} : ${o.port} db: ${o.database}`)}] ${e.message
+        `Mysql: [${$.c.y(`${o.host} : ${o.port} db: ${o.database}`)}] ${
+          e.message
         } reconnect...`
       )
       await $.wait(2000)
@@ -157,15 +157,13 @@ class SkyDB {
       }
       redis.on('ready', async function (msg) {
         if (o.sentinels) redis.readyMsg = msg
-        console.log('Redis Ready...', msg || '')
+        console.log(`Redis Ready... ${$.c.y('Waiting for Active')}`, msg || '')
       })
       redis.on('connect', async function () {
         redis.connStatus = { stat: 1 }
         const r = await redis.dbsize()
         if (redis.readyMsg) {
-          console.log(
-            $.c.g('✔'), redis.readyMsg
-          )
+          console.log($.c.g('✔'), redis.readyMsg)
         } else {
           console.log(
             $.c.g('✔'),
