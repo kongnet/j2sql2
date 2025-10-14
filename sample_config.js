@@ -3,7 +3,7 @@ const dbObj = {
   port: 3306,
   pool: 1000,
   timeout: 500000,
-  user: 'test',
+  user: 'root',
   password: '123456',
   database: 'test',
   multipleStatements: true, // 允许运行多行SQL

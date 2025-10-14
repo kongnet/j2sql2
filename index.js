@@ -46,7 +46,7 @@ class SkyDB {
       const t = $.now()
       const extendOption = o.extendOption || {}
       const pool = await Mysql.createPool(o)
-      const r = await pool.query(`use \`${dbName}\`;show tables;`)
+      let r = await pool.query(`use \`${dbName}\`;show tables;`)
       let n = 0
       const tableSize = r[1].length
       let unLoadTable = tableSize // 准备加载表计数
