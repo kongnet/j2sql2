@@ -8,7 +8,8 @@ global.$ = $
 let db = {}
 const SkyDB = require('../index.js')
 const Config = require('../test_sample_config')
-const allColumn = '`id` as id,`pid` as pid,`name` as name,`son` as son,`c_time` as cTime,`m_time` as mTime,`d_flag` as dFlag,`cell` as cell,`time` as time,`a` as a,`b` as b'
+const allColumn =
+  '`id` as id,`pid` as pid,`name` as name,`son` as son,`c_time` as cTime,`m_time` as mTime,`d_flag` as dFlag,`cell` as cell,`time` as time,`a` as a,`b` as b'
 describe('mongoDB转MySQL增删改查基础的单元测试', function () {
   before(async () => {
     const skyMysql = new SkyDB({
@@ -19,47 +20,96 @@ describe('mongoDB转MySQL增删改查基础的单元测试', function () {
   })
   it('1.find&findone测试', async () => {
     // console.log(db._mysql)
-    assert.strictEqual(db.test.R({
-      cell: true
-    }).get(), `select ${allColumn} from \`test\` where \`cell\`=true;`)
+    assert.strictEqual(
+      db.test
+        .R({
+          cell: true
+        })
+        .get(),
+      `select ${allColumn} from \`test\` where \`cell\`=true;`
+    )
 
-    assert.strictEqual(db.test.find().get(), `select ${allColumn} from \`test\`;`)
+    assert.strictEqual(
+      db.test.find().get(),
+      `select ${allColumn} from \`test\`;`
+    )
     assert.strictEqual(db.test.R().get(), `select ${allColumn} from \`test\`;`)
-    assert.strictEqual(db.test.select().get(), `select ${allColumn} from \`test\`;`)
-    assert.strictEqual(db.test.find({
-      time: {
-        '>=': 123,
-        '<': 1000
-      }
-    }).get(), `select ${allColumn} from \`test\` where \`time\`>=123 and \`time\`<1000;`)
-    assert.strictEqual(db.test.find({
-      time: {
-        '>=': 'x123',
-        '<': 'x1000'
-      }
-    }).get(), `select ${allColumn} from \`test\` where \`time\`>=\'x123\' and \`time\`<\'x1000\';`)
-    assert.strictEqual(db.test.find({
-      'min(a)+1': {
-        '>=': 'x123',
-        '<': 'x1000'
-      }
-    }).get(), `select ${allColumn} from \`test\` where min(a)+1>=\'x123\' and min(a)+1<\'x1000\';`)
+    assert.strictEqual(
+      db.test.select().get(),
+      `select ${allColumn} from \`test\`;`
+    )
+    assert.strictEqual(
+      db.test
+        .find({
+          time: {
+            '>=': 123,
+            '<': 1000
+          }
+        })
+        .get(),
+      `select ${allColumn} from \`test\` where \`time\`>=123 and \`time\`<1000;`
+    )
+    assert.strictEqual(
+      db.test
+        .find({
+          time: {
+            '>=': 'x123',
+            '<': 'x1000'
+          }
+        })
+        .get(),
+      `select ${allColumn} from \`test\` where \`time\`>=\'x123\' and \`time\`<\'x1000\';`
+    )
+    assert.strictEqual(
+      db.test
+        .find({
+          'min(a)+1': {
+            '>=': 'x123',
+            '<': 'x1000'
+          }
+        })
+        .get(),
+      `select ${allColumn} from \`test\` where min(a)+1>=\'x123\' and min(a)+1<\'x1000\';`
+    )
     /* assert.strictEqual(db.test.find({}, {
       cell: 1,
       'min(id)': 1
     }).get(), 'select `cell` as cell,`min(id)` as min(id) from `test`;') */
-    assert.strictEqual(db.test.find({}, {}, {
-      a: 1,
-      b: -1
-    }).get(), `select ${allColumn} from \`test\` order by \`a\` asc, \`b\` desc;`)
+    assert.strictEqual(
+      db.test
+        .find(
+          {},
+          {},
+          {
+            a: 1,
+            b: -1
+          }
+        )
+        .get(),
+      `select ${allColumn} from \`test\` order by \`a\` asc, \`b\` desc;`
+    )
 
-    assert.strictEqual(db.test.find({}, {}, {}, 5).get(), `select ${allColumn} from \`test\` limit 5;`)
-    assert.strictEqual(db.test.findOne().get(), `select ${allColumn} from \`test\` limit 1;`)
-    assert.strictEqual(db.test.R({
-      cell: '13052000000'
-    }).get(), `select ${allColumn} from \`test\` where \`cell\`='13052000000';`, db.test.R({
-      cell: '13052000000'
-    }).get())
+    assert.strictEqual(
+      db.test.find({}, {}, {}, 5).get(),
+      `select ${allColumn} from \`test\` limit 5;`
+    )
+    assert.strictEqual(
+      db.test.findOne().get(),
+      `select ${allColumn} from \`test\` limit 1;`
+    )
+    assert.strictEqual(
+      db.test
+        .R({
+          cell: '13052000000'
+        })
+        .get(),
+      `select ${allColumn} from \`test\` where \`cell\`='13052000000';`,
+      db.test
+        .R({
+          cell: '13052000000'
+        })
+        .get()
+    )
   })
 
   it('2.remove测试', async () => {
@@ -67,23 +117,41 @@ describe('mongoDB转MySQL增删改查基础的单元测试', function () {
     assert.strictEqual(db.test.remove({}, 1).get(), 'delete from `test`;')
     assert.strictEqual(db.test.D({}, 1).get(), 'delete from `test`;')
     assert.strictEqual(db.test.delete({}, 1).get(), 'delete from `test`;')
-    assert.strictEqual(db.test.remove({
-      time: {
-        '>=': 123,
-        '<': 1000
-      }
-    }).get(), 'delete from `test` where `time`>=123 and `time`<1000;')
+    assert.strictEqual(
+      db.test
+        .remove({
+          time: {
+            '>=': 123,
+            '<': 1000
+          }
+        })
+        .get(),
+      'delete from `test` where `time`>=123 and `time`<1000;'
+    )
   })
 
   it('3.update测试', async () => {
-    assert.strictEqual(db.test.U({
-      id: 11
-    }).get(), '[Empty!!]')
+    assert.strictEqual(
+      db.test
+        .U({
+          id: 11
+        })
+        .get(),
+      '[Empty!!]'
+    )
     assert.strictEqual(db.test.update().get(), '[Empty!!]')
-    assert.strictEqual(db.test.update({}, {
-      cell: '1',
-      'min(id)': 1
-    }).get(), '[Empty!!]')
+    assert.strictEqual(
+      db.test
+        .update(
+          {},
+          {
+            cell: '1',
+            'min(id)': 1
+          }
+        )
+        .get(),
+      '[Empty!!]'
+    )
 
     /* assert.strictEqual(db.test.update({}, {
       cell: 1,

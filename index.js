@@ -1,5 +1,6 @@
 const $ = require('meeko')
-const Mysql = require('promise-mysql')
+// const Mysql = require('promise-mysql')
+const Mysql = require('mysql2/promise')
 const Redis = require('ioredis')
 Redis.Promise = require('bluebird') // 使用蓝鸟
 const DbOpt = require('./lib/mysql_opt')
@@ -46,7 +47,12 @@ class SkyDB {
       const t = $.now()
       const extendOption = o.extendOption || {}
       const pool = await Mysql.createPool(o)
-      let r = await pool.query(`use \`${dbName}\`;show tables;`)
+
+      let r = (
+        await pool.query(
+          `use \`${dbName}\`;show tables;select version() as version;`
+        )
+      )[0]
       let n = 0
       const tableSize = r[1].length
       let unLoadTable = tableSize // 准备加载表计数
@@ -62,7 +68,8 @@ class SkyDB {
         const tableFieldArr = []
         const tableTypeArr = []
         const tableFielCamelObj = {}
-        ;(await pool.query(`desc \`${_name}\`;`)).map(item => {
+        const initResult = (await pool.query(`desc \`${_name}\`;`))[0]
+        initResult.map(item => {
           tableFielCamelObj[item.Field.toLowerCase()] =
             item.Field.toLowerCase().camelize('_')
           tableFieldArr.push(item.Field.toLowerCase())
@@ -84,9 +91,11 @@ class SkyDB {
         // $.log('DB Obj loading =>', db._nowPercent, '%') // 打印加载进度
         if (unLoadTable <= 0) {
           // 这里这样处理因为之前是异步调用完成所有表加载
-          const outStr = `j2sql2 (${pack.version || 'Unknown'}) [${$.c.y(
-            `${o.host} : ${o.port} db: ${o.database}`
-          )}] [${$.c.y(n)}] Tables, loadTime: ${$.c.y($.now() - t)} ms`
+          const outStr = `j2sql2 (${pack.version || 'Unknown'}) Mysql (${$.c.y(
+            r[2][0]['version']
+          )}) [${$.c.y(`${o.host} : ${o.port} db: ${o.database}`)}] [${$.c.y(
+            n
+          )}] Tables, loadTime: ${$.c.y($.now() - t)} ms`
           console.log($.c.g('✔'), outStr)
           pool.on('connection', function () {
             console.log($.c.g('✔'), outStr)

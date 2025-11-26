@@ -22,6 +22,7 @@
     "ioredis": "^4.14.1",
     "meeko": "^1.8.298",
     "mssql": "^12.0.0",
+    "mysql2": "^3.15.3",
     "promise-mysql": "^4.1.1"
   },
   "config": {

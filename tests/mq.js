@@ -6,7 +6,6 @@ const Config = require('../sample_config')
 global.$ = $
 let rabbitMQ
 describe('mq', function () {
-
   before(async () => {
     const skyMysql = new SkyDB({
       rabbitMQ: {
@@ -48,15 +47,14 @@ describe('mq', function () {
       rabbitMQ.rev({
         noAck: false,
         // prefetch: 1,
-        cbFunc: consumerFunc,
+        cbFunc: consumerFunc
         // queueName: 'test'
       })
-      function consumerFunc(data,ch){
+      function consumerFunc (data, ch) {
         console.log(data.content.toString())
         ch.ack(data)
       }
       // assert(false)
     })
   })
-
 })
