@@ -109,7 +109,7 @@ class SkyDB {
           db.cmd = new DbOpt(db, _name, extendOption).cmd
 
           db.run = async function (preSql, valArr = []) {
-            return db.pool.query(preSql, valArr)
+            return db.pool.query(preSql, valArr)[0]
           }
 
           db.genData = async function (tableName, n = 10000) {
