@@ -11,12 +11,6 @@ const reJson = require('./lib/redis_json.js')
 const RabbitMQ = require('./lib/rabbitmq_opt')
 const mssql = require('mssql')
 const pack = require('./package.json')
-/*
-400 sql前端解析错误
-401
-402 sql后端执行错误
-*/
-
 class SkyDB {
   constructor (option) {
     this.rabbitMQObj = this.createRabbitMQ(option.rabbitMQ)
@@ -24,19 +18,15 @@ class SkyDB {
     this.redisOptObj = this.createRedisOpt(option.redis)
     this.mssqlOptObj = this.createMssqlOpt(option.mssql)
   }
-
   get rabbitMQ () {
     return this.rabbitMQObj
   }
-
   get mysql () {
     return this.mysqlObj
   }
-
   get redis () {
     return this.redisOptObj
   }
-
   get mssql () {
     return this.mssqlOptObj
   }
@@ -252,5 +242,9 @@ class SkyDB {
     }
   }
 }
-
 module.exports = SkyDB
+/*
+400 sql前端解析错误
+401
+402 sql后端执行错误
+*/
