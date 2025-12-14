@@ -20,7 +20,7 @@ const pack = require('./package.json')
 class SkyDB {
   constructor (option) {
     this.rabbitMQObj = this.createRabbitMQ(option.rabbitMQ)
-    this.mysqlObj = this.createMysqlOpt(option.mysql)
+    this.mysqlObj = option.mysql ? this.createMysqlOpt(option.mysql) : Mysql
     this.redisOptObj = this.createRedisOpt(option.redis)
     this.mssqlOptObj = this.createMssqlOpt(option.mssql)
   }
