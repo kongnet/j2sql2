@@ -10,13 +10,15 @@ const KeysLimit = require('./lib/redis_keys_limit.js')
 const reJson = require('./lib/redis_json.js')
 const RabbitMQ = require('./lib/rabbitmq_opt')
 const mssql = require('mssql')
+const Dmdb = require('dmdb')
 const pack = require('./package.json')
 class SkyDB {
   constructor (option) {
     this.rabbitMQObj = this.createRabbitMQ(option.rabbitMQ)
-    this.mysqlObj = option.mysql ? this.createMysqlOpt(option.mysql) : Mysql
+    this.mysqlObj = this.createMysqlOpt(option.mysql)
     this.redisOptObj = this.createRedisOpt(option.redis)
     this.mssqlOptObj = this.createMssqlOpt(option.mssql)
+    this.dmdbOptObj = this.createDmdbOpt(option.dmdb)
   }
   get rabbitMQ () {
     return this.rabbitMQObj
@@ -30,7 +32,9 @@ class SkyDB {
   get mssql () {
     return this.mssqlOptObj
   }
-
+  get dmdb () {
+    return this.dmdbOptObj
+  }
   async getMysqlConnectObj (o, dbName) {
     try {
       const db = {}
@@ -236,6 +240,57 @@ class SkyDB {
         }
       }
       return mssqlObj
+    } catch (e) {
+      console.error(e)
+      return -1
+    }
+  }
+  async createDmdbOpt (o) {
+    if (!o || $.tools.ifObjEmpty(o)) {
+      console.log($.c.dimy('？ Skip DMDB Init...'))
+      return {}
+    }
+    try {
+      const t = $.now()
+      let option = {
+        connectString: `dm://${o.user}:${o.password}@${o.connectionString}`,
+        ...o
+      }
+
+      const pool = await Dmdb.createPool(option)
+      const conn = await pool.getConnection()
+      const r = await conn.execute(
+        'Select count(1) FROM user_tables;select * from v$version;'
+      )
+      const rst = r?.implicitResults || r?.rows || r
+      // console.log()
+
+      const outStr = `DMDB [${$.c.b(rst[1][0])}] [${$.c.y(
+        `${o.connectionString} USER: ${o.user}`
+      )}] [${$.c.y(rst[0][0])}] Tables, loadTime: ${$.c.y($.now() - t)} ms`
+      console.log($.c.g('✔'), outStr)
+
+      const dmdbObj = {
+        pool,
+        run: async function (sql, sqlVals = []) {
+          let sqlStr
+          try {
+            let conn = await pool.getConnection()
+            sqlStr = Mysql.format(sql, sqlVals)
+            let result = await conn.execute(sqlStr)
+            await conn.close()
+            return result?.implicitResults || result?.rows || result || []
+          } catch (e) {
+            $.err(e.message, sqlStr)
+          } finally {
+            try {
+              // console.log('===close conn===')
+              await conn.close()
+            } catch (err) {}
+          }
+        }
+      }
+      return dmdbObj
     } catch (e) {
       console.error(e)
       return -1

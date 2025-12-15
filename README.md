@@ -1,6 +1,6 @@
 # j2sql2
 
-enhance j2sql use ioredis mysql-promise mssql
+enhance j2sql use ioredis mysql2/promise mssql dmdb
 
 ###
 
@@ -9,6 +9,9 @@ npm i j2sql2
 导入 sample.sql
 
 node sample.js
+
+ > dmdb达梦数据库测试  **目前支持node 16**
+ node sample_dm.js
 
 ### 关键字和表的冲突
 
@@ -68,6 +71,21 @@ redis: {
     
 // 详见 sample.js
 ```
+```javascript
+ // 创建SkyDB实例
+    const skyDB = new SkyDB({
+      dmdb: Config.dmdb
+    })
+    // 创建dmdb实例
+    const dm = await skyDB.dmdb
+
+    // 测试增删改查
+    let r = await dm.run('select * from test_user where username = ?;', [
+      'test5'
+    ])
+    console.log('Select: ', r, r.length)
+```
+
 - 详见 crud.js
 - page, 分页
 - list,

@@ -52,11 +52,32 @@ const mssqlObj = {
   port: 1433,
   database: '...'
 }
-
+const dmdbObj = {
+  // 必填参数
+  user: 'SYSDBA', // 用户名
+  password: 'SYSDBA', // 密码
+  connectionString: '8.147.132.97:5236', //'localhost:5236', // 连接字符串
+  // 可选
+  poolMax: 10,
+  poolMin: 0,
+  poolTimeout: 600,
+  queueMax: 1000,
+  queueTimeout: 15000, // 15秒超时 120000  2分钟
+  queueRequests: true,
+  schema: 'SYSDBA', // 默认模式，默认同用户名
+  autoCommit: true, // 是否自动提交，默认true
+  encoding: 'UTF-8', // 字符编码，默认UTF-8
+  // 其他高级参数
+  fetchRowSize: 100, // 每次获取的行数，默认100
+  fetchAsString: [], // 将指定类型作为字符串获取，如 [dm.CLOB]
+  fetchAsBuffer: [], // 将指定类型作为Buffer获取
+  lobPrefetchSize: 16384 // LOB预取大小，默认16384
+}
 module.exports = {
   mssql: mssqlObj,
   mysql: dbObj,
   redis: redisObj,
+  dmdb: dmdbObj,
   rabbitMQ,
   dbscan: {
     mysql: dbObj,
