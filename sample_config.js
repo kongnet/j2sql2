@@ -56,7 +56,7 @@ const dmdbObj = {
   // 必填参数
   user: 'SYSDBA', // 用户名
   password: 'SYSDBA', // 密码
-  connectionString: '8.147.132.97:5236', //'localhost:5236', // 连接字符串
+  connectionString: 'localhost:5236', //'localhost:5236', // 连接字符串
   // 可选
   poolMax: 10,
   poolMin: 0,
