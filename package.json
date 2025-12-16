@@ -1,7 +1,7 @@
 {
   "name": "j2sql2",
   "version": "2.0.13",
-  "description": "j2sql2自用函数",
+  "description": "A Node.js database abstraction layer with unified API for MySQL, Redis, MSSQL, DMDB and RabbitMQ. Enhanced with CRUD operations, field validation, and camelCase conversion. | Node.js 数据库抽象层，支持 MySQL、Redis、MSSQL、达梦数据库和 RabbitMQ，提供增强的 CRUD 操作",
   "main": "index.js",
   "scripts": {
     "push": "npm version patch && npm publish . && git push",
