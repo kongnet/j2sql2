@@ -25,8 +25,8 @@ npm i j2sql2
 ### 快速开始 (Quick Start)
 
 ```bash
-# 导入示例数据库
-mysql < sample.sql
+# 导入示例数据库 (根据实际情况修改连接参数)
+mysql -u root -p your_database < sample.sql
 
 # 运行示例代码
 node sample.js
