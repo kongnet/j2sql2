@@ -1,17 +1,78 @@
 # j2sql2
 
-enhance j2sql use ioredis mysql2/promise mssql dmdb
+## 这是什么库？ (What is this library?)
 
-###
+**j2sql2** 是一个 Node.js 数据库抽象层库，提供统一的 API 来访问和操作多种数据库和消息队列系统。
 
+**j2sql2** is a Node.js database abstraction layer that provides a unified API for accessing and operating multiple databases and message queue systems.
+
+### 核心功能 (Core Features)
+
+- 🗄️ **多数据库支持**: 统一接口支持 MySQL、Redis、MSSQL、达梦数据库(DMDB)
+- 🔧 **增强的 CRUD 操作**: 内置分页、条件查询、字段验证等功能
+- 🔄 **驼峰命名转换**: 自动转换数据库字段名为 camelCase 格式
+- 🛡️ **Redis Key 限制**: 内置 Redis key 访问控制和 ReJSON 支持
+- 📝 **逻辑删除**: 支持软删除和时间戳自动管理
+- 🐰 **RabbitMQ 支持**: 集成消息队列功能
+- ✅ **类型检测**: 自动检测和验证字段类型
+
+### 安装 (Installation)
+
+```bash
 npm i j2sql2
+```
 
-导入 sample.sql
+### 快速开始 (Quick Start)
 
+```bash
+# 导入示例数据库 (根据实际情况修改连接参数)
+mysql -u root -p your_database < sample.sql
+
+# 运行示例代码
 node sample.js
+```
 
- > dmdb达梦数据库测试  **目前支持node 16**
- node sample_dm.js
+#### 基本使用示例 (Basic Usage Example)
+
+```javascript
+const SkyDB = require('j2sql2')
+
+// 创建实例
+const skyDB = new SkyDB({
+  mysql: {
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    password: 'password',
+    database: 'test'
+  },
+  redis: {
+    host: 'localhost',
+    port: 6379
+  }
+})
+
+// 使用 MySQL
+const db = await skyDB.mysql
+const result = await db.run('SELECT * FROM users WHERE id = ?', [1])
+
+// 使用 Redis
+const rd = await skyDB.redis
+await rd.set('key', 'value')
+const value = await rd.get('key')
+
+// 使用增强的 CRUD 操作
+const users = await db.users.ex.list({ status: 1 })
+const page = await db.users.ex.page(null, null, 10, 1)
+```
+
+#### 达梦数据库测试 (DMDB Testing)
+
+ > **目前支持 node 16** (Currently supports Node.js 16)
+ 
+```bash
+node sample_dm.js
+```
 
 ### 关键字和表的冲突
 
